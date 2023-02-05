@@ -1,0 +1,5 @@
+http://localhost:9001/limits
+
+http://localhost:9002/microservice-x/messages
+
+http://localhost:9003/microservice-y/messages

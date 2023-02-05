@@ -1,0 +1,33 @@
+version: '3.4'
+
+services:
+  limits-service:
+    build: .
+    image: limits-service-config-client-image:latest
+    command: "npm run start-container-app"
+    links:
+      - config-server
+    depends_on:
+      - config-server
+    ports:
+      - 9001:9001
+
+  config-client-x:
+    build: .
+    image: microservice-config-client-x-image:latest
+    command: "npm run start-container-proxy"
+    links:
+      - config-server
+    depends_on:
+      - config-server
+    ports:
+      - 9002:9002
+
+  config-server:
+    image: spring-cloud-config-server-image:latest
+    environment:
+      SPRING_CLOUD_CONFIG_SERVER_GIT_URI: "${SPRING_CLOUD_CONFIG_SERVER_GIT_URI:-https://github.com/asohrab18/spring-cloud-config-repo}"
+      SPRING_CLOUD_CONFIG_SERVER_GIT_PASSWORD: ""
+      SPRING_CLOUD_CONFIG_SERVER_GIT_CLONE_ON_START: "true"
+    ports:
+      - 8888:8888
